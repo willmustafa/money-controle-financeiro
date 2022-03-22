@@ -1,0 +1,458 @@
+<div id="preloader">
+    <div class="spinning-circle"></div>
+</div>
+<fieldset class="despesas receitas">
+    <div class="container">
+        <div class="col-12 mt-2">
+            <p class="text-white m0">Valor</p>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <h3 class="money-text">R$</h3>
+                </div>
+                <input type="number" class="h3 input-transparente" placeholder="0,00" id="valor">
+            </div>
+        </div>
+    </div>
+    <div class="w-100 vh-100" style="background-color: white; border-radius: 20px 20px 0px 0px;">
+        <div class="container">
+            <div class="form-group mb-0 pb-2 pt-2">
+                <label for="data" class="col-sm-1 col-form-label datepicker ">Data</label>
+                <div class="col-sm-11">
+                    <input type="date" class="form-control-plaintext bb" id="data">
+                </div>
+            </div>
+            <div class="form-group mb-0 pb-2 pt-2">
+                <label for="descricao" class="col-sm-1 col-form-label">Descrição</label>
+                <div class="col-sm-11">
+                    <input type="text" class="form-control-plaintext bb" id="descricao" placeholder="Ração do Gato">
+                </div>
+            </div>
+            <div class="form-group radio icheck-pumpkin">
+                <div class="col-12">
+                    <input class="form-check-input" type="checkbox" value="pagamentoCartao" id="pagamentoCartao">
+                    <label class="form-check-label" for="pagamentoCartao">
+                        Pagamento de Cartão de Crédito
+                    </label>
+                </div>
+            </div>
+            <div class="form-group mb-0 pb-2 pt-2">
+                <label for="categoria" class="col-sm-1 col-form-label">Categoria</label>
+                <div class="col-10">
+                    <select type="text" class="form-control-plaintext bb" id="categoria">
+                        <optgroup label="Gastos_Essenciais">
+                        </optgroup>
+                        <optgroup label="Gastos">
+                        </optgroup>
+                        <optgroup label="Receitas">
+                        </optgroup>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-outline-primary col-2" data-modal="modalCategoria">+</button>
+            </div>
+            <div class="form-group mb-0 pb-2 pt-2">
+                <label for="conta" class="col-sm-1 col-form-label">Conta</label>
+                <div class="col-10">
+                    <select type="text" class="form-control-plaintext bb" id="conta">
+                        <optgroup label="Bancos">
+                        </optgroup>
+                        <optgroup label="Cartões">
+                        </optgroup>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-outline-primary col-2" data-modal="modalConta">+</button>
+            </div>
+            <div class="col-sm-12 text-center pb-3 pt-4">
+                <button type="button" class="btn btn-outline-danger col-12" onclick="salvar(true)">Salvar e
+                    Fechar</button>
+            </div>
+            <div class="col-sm-12 text-center">
+                <button type="button" class="btn btn-outline-danger col-12" onclick="salvar(false)">Salvar e
+                    Criar Nova</button>
+            </div>
+        </div>
+    </div>
+
+</fieldset>
+<fieldset class="transferencia">
+    <div class="container">
+        <div class="col-12 mt-2">
+            <p class="text-white m0">Valor</p>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <h3 class="money-text">R$</h3>
+                </div>
+                <input type="number" class="h3 input-transparente" placeholder="0,00" id="valor">
+            </div>
+        </div>
+    </div>
+    <div class="w-100 vh-100" style="background-color: white; border-radius: 20px 20px 0px 0px;">
+        <div class="container">
+            <div class="form-group mb-0 pb-2 pt-2">
+                <label for="data" class="col-sm-1 col-form-label datepicker ">Data</label>
+                <div class="col-sm-11">
+                    <input type="date" class="form-control-plaintext bb" id="data">
+                </div>
+            </div>
+            <div class="form-group mb-0 pb-2 pt-2">
+                <label for="conta" class="col-sm-1 col-form-label">Saiu da Conta</label>
+                <div class="col-10">
+                    <select type="text" class="form-control-plaintext bb" id="contaSaida">
+                    </select>
+                </div>
+                <button type="button" class="btn btn-outline-primary col-2" data-modal="modalConta">+</button>
+            </div>
+            <div class="form-group mb-0 pb-2 pt-2">
+                <label for="conta" class="col-sm-1 col-form-label">Entrou na Conta</label>
+                <div class="col-10">
+                    <select type="text" class="form-control-plaintext bb" id="conta">
+                    </select>
+                </div>
+                <button type="button" class="btn btn-outline-primary col-2" data-modal="modalConta">+</button>
+            </div>
+            <div class="col-sm-12 text-center pb-3 pt-4">
+                <button type="button" class="btn btn-outline-danger col-12" onclick="salvar(true)">Salvar e
+                    Fechar</button>
+            </div>
+            <div class="col-sm-12 text-center">
+                <button type="button" class="btn btn-outline-danger col-12" onclick="salvar(false)">Salvar e
+                    Criar Nova</button>
+            </div>
+        </div>
+    </div>
+</fieldset>
+<!-- MODAL -->
+<div class="modal" tabindex="-1" role="dialog" id="modalCategoria">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Adicionar Categoria</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <select type="text" class="form-control-plaintext bb mb-2" id="tipoCategoria">
+                    <option selected>Gastos Essenciais</option>
+                    <option>Gastos</option>
+                </select>
+                <input type="text" class="form-control-plaintext bb" id="novaCategoria" placeholder="Alimentação">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="salvarCategoria()">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" tabindex="-1" role="dialog" id="modalConta">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Adicionar Conta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <select type="text" class="form-control-plaintext bb mb-2" id="tipoConta">
+                    <option selected>Banco</option>
+                    <option>Cartão</option>
+                </select>
+                <input type="text" class="form-control-plaintext" id="novaConta" placeholder="Banco do Brasil">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="salvarConta()">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="toast">
+    <div id="img"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" /></svg></div>
+    <div id="desc">Salvo com Sucesso</div>
+</div>
+</body>
+
+<script>
+    var elDados = "";
+    var dadosFinais = "";
+    window.onload = function () {
+        google.script.run.withSuccessHandler(populate).withFailureHandler(falha).lerDadosNaSpreadsheet();
+
+        // Remove os fieldsets que não são da classe da ID
+        const bodyId = document.getElementsByTagName('body')[0].id;
+        document.querySelectorAll(`fieldset:not(.${bodyId})`).forEach(x => {
+            x.remove()
+        });
+
+        // Adiciona um listener no botão de fechar o modal
+        let modalClose = document.querySelectorAll('.modal .close');
+        for (let i = 0; i < modalClose.length; i++) {
+            modalClose[i].addEventListener("click", function () {
+                modalClose[i].closest('.modal').style.display = "none";
+                document.getElementsByClassName('modal-backdrop')[0].remove();
+            })
+        }
+
+        //Adiciona um listener para abertura de modal
+        document.querySelectorAll('button[data-modal]').forEach((x) => {
+            x.addEventListener('click', function () {
+                openModal(x.dataset['modal'])
+            })
+        })
+
+
+        // Event listener para o botão de pagamento com cartão
+        if (document.getElementsByTagName('body')[0].id !== 'transferencia') {
+            document.getElementById('pagamentoCartao').addEventListener('click', function () {
+                const descricaoEl = document.getElementById('descricao');
+                const categoriaEl = document.getElementById('categoria');
+
+                if (this.checked) {
+
+                    descricaoEl.value = "Pagamento de Cartão";
+                    descricaoEl.disabled = true;
+
+                    const newOption = document.createElement('option');
+                    newOption.text = "Pagamento de Cartão";
+                    newOption.value = "Pagamento de Cartão";
+                    categoriaEl.appendChild(newOption);
+                    categoriaEl.disabled = true;
+                    categoriaEl.value = "Pagamento de Cartão";
+
+                } else {
+                    categoriaEl.disabled = false;
+                    categoriaEl.value = "";
+
+                    descricaoEl.value = "";
+                    descricaoEl.disabled = false;
+                }
+            })
+        }
+
+        elDados = new ElementosDados();
+
+        fadeOut(document.getElementById('preloader'), 1000);
+
+    }
+
+    // helpers
+    function fadeOut(element, time) {
+        // add class fade-out
+        element.classList.toggle('fade-out');
+
+        // wait and disable the display
+        window.setTimeout(
+            function () {
+                element.style.display = "none";
+            }, time
+        );
+    }
+
+    function populate(data) {
+        data.contas.forEach(x => {
+            let option = document.createElement('option');
+            option.value = x[0];
+            option.text = x[0];
+
+            document.querySelector('#conta optgroup[label=Bancos]').appendChild(option);
+
+            if (document.getElementsByTagName('body')[0].id == "transferencia") {
+                document.querySelector('#contaSaida').appendChild(option);
+                document.querySelector('select#conta').appendChild(option);
+            }
+        })
+
+        data.cartoes.forEach(x => {
+            let option = document.createElement('option');
+            option.value = x[0];
+            option.text = x[0];
+
+            document.querySelector('#conta optgroup[label=Cartões]').appendChild(option);
+        })
+
+        data.gastosEssenciais.forEach(x => {
+            let option = document.createElement('option');
+            option.value = x[0];
+            option.text = x[0];
+
+            document.querySelector('#categoria optgroup[label=Gastos_Essenciais]').appendChild(option)
+        })
+
+        data.gastos.forEach(x => {
+            let option = document.createElement('option');
+            option.value = x[0];
+            option.text = x[0];
+
+            document.querySelector('#categoria optgroup[label=Gastos]').appendChild(option)
+        })
+
+        data.receitas.forEach(x => {
+            let option = document.createElement('option');
+            option.value = x[0];
+            option.text = x[0];
+
+            document.querySelector('#categoria optgroup[label=Receitas]').appendChild(option)
+        })
+    }
+
+    /**
+     * Classe dos elementos de dados, use em todo o projeto
+     */
+    class ElementosDados {
+        constructor() {
+            this.data = document.getElementById('data');
+            this.conta = document.getElementById('conta');
+            this.valor = document.getElementById('valor');
+            this.bodyId = document.getElementsByTagName('body');
+
+            if (this.bodyId[0].id == "transferencia") {
+                this.contaSaida = document.getElementById('contaSaida');
+            } else {
+                this.descricao = document.getElementById('descricao');
+                this.categoria = document.getElementById('categoria');
+            }
+        }
+    }
+
+    /**
+     * Cria os dados, puchando dos elementos diretamente
+     */
+    class Dados {
+        constructor() {
+            this.data = new Date(elDados.data.value).toLocaleString('pt-BR', {
+                dateStyle: 'short'
+            });
+            this.conta = elDados.conta.value;
+            this.valor = parseFloat(elDados.valor.value).toLocaleString('pt-BR');
+            if (elDados.bodyId[0].id == "despesas") {
+                this.valor = this.valor * (-1);
+            }
+
+            if (elDados.bodyId[0].id == "transferencia") {
+                this.contaSaida = elDados.contaSaida.value;
+            } else {
+                this.descricao = elDados.descricao.value;
+                this.categoria = elDados.categoria.value;
+            }
+            this.tipo = elDados.bodyId[0].id;
+            this.close = false;
+        }
+    }
+
+
+    /**
+     * Abre o modal baseado no ID
+     */
+    function openModal(idName) {
+        // Background black
+        const divBackground = document.createElement('div');
+        divBackground.classList.add('modal-backdrop');
+        elDados.bodyId[0].append(divBackground);
+
+        document.querySelector(`.modal#${idName}`).style.display = "block";
+    }
+
+    /**
+     * Acessa a classe de elementos e zera o valor
+     */
+    function resetarDados() {
+
+        // Apaga os dados
+        Object.entries(elDados).forEach(x => {
+            x[1].value = ""
+        });
+        var x = document.getElementById("toast")
+        x.className = "show";
+        setTimeout(function () {
+            x.className = x.className.replace("show", "");
+        }, 5000);
+
+        fadeOut(document.getElementById('preloader'), 0);
+    }
+
+
+    /**
+     * Insere os dados do HTML no Spreadsheet 
+     */
+    function salvar(closeBool) {
+        document.getElementById('preloader').classList = "";
+        document.getElementById('preloader').style.display = "block";
+        
+        dadosFinais = new Dados();
+        dadosFinais.close = closeBool;
+        google.script.run
+            .withSuccessHandler(sucesso)
+            .withFailureHandler(falha)
+            .escreverDados(dadosFinais);
+    }
+
+    /**
+     * Evento de sucesso ao salvar
+     */
+    function sucesso() {
+        if (dadosFinais.close) {
+            google.script.host.close();
+        } else {
+            resetarDados();
+        }
+    }
+
+    /**
+     * Evento de falha ao salvar
+     */
+    function falha(error) {
+        document.getElementById("desc").text = "Ocorreu um Erro";
+        var x = document.getElementById("toast")
+        x.className = "show";
+        setTimeout(function () {
+            x.className = x.className.replace("show", "");
+        }, 5000);
+    }
+
+    /**
+     * Salva a nova categoria no Spreadsheet e adiciona no HTML
+     */
+    function salvarCategoria() {
+        var novaCategoria = document.getElementById('novaCategoria').value;
+        var data = {
+            categoria: novaCategoria,
+            tipo: document.getElementById('tipoCategoria').value
+        };
+
+        var option = document.createElement('option');
+        option.text = novaCategoria;
+        option.value = novaCategoria;
+        elDados.categoria.appendChild(option);
+        option.selected = true;
+
+        google.script.run.escreverCategoria(data);
+
+        document.querySelector('#categoria .close').click()
+    }
+
+    /**
+     * Salva a nova conta no Spreadsheet e adiciona no HTML
+     */
+    function salvarConta() {
+        var novaCategoria = document.getElementById('novaConta').value;
+        var data = {
+            categoria: novaCategoria,
+            tipo: document.getElementById('tipoConta').value
+        };
+
+        var option = document.createElement('option');
+        option.text = novaCategoria;
+        option.value = novaCategoria;
+        elDados.conta.add(option);
+        option.selected = true;
+
+        google.script.run.escreverConta(data);
+
+        document.querySelector('#novaConta .close').click()
+    }
+</script>
+
+</html>
