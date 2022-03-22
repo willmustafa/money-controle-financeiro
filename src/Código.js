@@ -81,15 +81,12 @@ function lerDadosNaSpreadsheet(){
 // -------------------------
 
 function escreverDados(data) {
+
   // Gera uma nova linha no topo
   money.ss_Lancamentos.insertRowBefore(2);
 
-  // Se transferência muda a fórmula
-  if (data.categoria == "Transferência") {
-    money.ss_Lancamentos.getRange("F2").setFormula("=C2");
-  } else {
-    money.ss_Lancamentos.getRange("F2").setFormula("=E2");
-  }
+  // Fórmula
+  money.ss_Lancamentos.getRange("F2").setFormula("=E2");
 
   // Copia as fórmulas para o novo campo
   money.ss_Lancamentos.getRange("H3").copyTo(money.ss_Lancamentos.getRange("H2"));
@@ -98,14 +95,8 @@ function escreverDados(data) {
   money.ss_Lancamentos.getRange("A2:E2").setValues([
     [data.data, data.descricao, data.categoria, data.conta, data.valor]
   ])
-
-  // Se fecha ou não
-  if(data.close){
-    SpreadsheetApp.getUi().alert(data.categoria + ' Adicionado(a) com Sucesso!');
-  }else{
-    return;
-  }
 }
+
 
 function escreverTransferencia(data) {
   // Insere uma linha no topo
@@ -117,7 +108,7 @@ function escreverTransferencia(data) {
 
   // Insere os valores
   money.ss_Lancamentos.getRange("A2:E2").setValues([
-    [data.data, data.descricao, data.categoria, data.contaSaida, (data.valor * (-1))]
+    [data.data, `${data.contaSaida}->${data.conta}`, data.categoria, data.contaSaida, (data.valor * (-1))]
   ]);
 
   // Insere uma linha no topo
@@ -129,16 +120,8 @@ function escreverTransferencia(data) {
 
   // Insere os valores
   money.ss_Lancamentos.getRange("A2:E2").setValues([
-    [data.data, data.descricao, data.categoria, data.contaSaida, data.valor]
+    [data.data, `${data.contaSaida}->${data.conta}`, data.categoria, data.conta, data.valor]
   ]);
-
-  // Se fecha ou não
-  if(data.close){
-    SpreadsheetApp.getUi().alert('Transferência Adicionada com Sucesso!');
-  }else{
-    return;
-  }
-  
 }
 
 function escreverCategoria(data) {
