@@ -7,3 +7,7 @@
  ![Despesas](/resources/despesa.png?raw=true)
 
  Criado no Google Sheets, utilizando o Google App Script, plugin clasp e partes do Bootstrap.
+ 
+ ## Utilize agora mesmo! Copie a planilha para o seu Google Drive.
+ 
+ https://docs.google.com/spreadsheets/d/11KDJsO76VLoawg2EdAgp8EU8a-puzPgg6UL1NtUCWX4/edit?usp=sharing
