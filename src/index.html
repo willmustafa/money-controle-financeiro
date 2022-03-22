@@ -256,46 +256,52 @@
             let option = document.createElement('option');
             option.value = x[0];
             option.text = x[0];
-
-            document.querySelector('#conta optgroup[label=Bancos]').appendChild(option);
-
+            
             if (document.getElementsByTagName('body')[0].id == "transferencia") {
-                document.querySelector('#contaSaida').appendChild(option);
-                document.querySelector('select#conta').appendChild(option);
+                document.getElementById('contaSaida').appendChild(option);
+
+                let option2 = document.createElement('option');
+                option2.value = x[0];
+                option2.text = x[0];
+                document.querySelector('select#conta').appendChild(option2);
+            }else{
+                document.querySelector('#conta optgroup[label=Bancos]').appendChild(option);
             }
         })
 
-        data.cartoes.forEach(x => {
-            let option = document.createElement('option');
-            option.value = x[0];
-            option.text = x[0];
-
-            document.querySelector('#conta optgroup[label=Cartões]').appendChild(option);
-        })
-
-        data.gastosEssenciais.forEach(x => {
-            let option = document.createElement('option');
-            option.value = x[0];
-            option.text = x[0];
-
-            document.querySelector('#categoria optgroup[label=Gastos_Essenciais]').appendChild(option)
-        })
-
-        data.gastos.forEach(x => {
-            let option = document.createElement('option');
-            option.value = x[0];
-            option.text = x[0];
-
-            document.querySelector('#categoria optgroup[label=Gastos]').appendChild(option)
-        })
-
-        data.receitas.forEach(x => {
-            let option = document.createElement('option');
-            option.value = x[0];
-            option.text = x[0];
-
-            document.querySelector('#categoria optgroup[label=Receitas]').appendChild(option)
-        })
+        if (document.getElementsByTagName('body')[0].id !== "transferencia") {
+            data.cartoes.forEach(x => {
+                let option = document.createElement('option');
+                option.value = x[0];
+                option.text = x[0];
+    
+                document.querySelector('#conta optgroup[label=Cartões]').appendChild(option);
+            })
+    
+            data.gastosEssenciais.forEach(x => {
+                let option = document.createElement('option');
+                option.value = x[0];
+                option.text = x[0];
+    
+                document.querySelector('#categoria optgroup[label=Gastos_Essenciais]').appendChild(option)
+            })
+    
+            data.gastos.forEach(x => {
+                let option = document.createElement('option');
+                option.value = x[0];
+                option.text = x[0];
+    
+                document.querySelector('#categoria optgroup[label=Gastos]').appendChild(option)
+            })
+    
+            data.receitas.forEach(x => {
+                let option = document.createElement('option');
+                option.value = x[0];
+                option.text = x[0];
+    
+                document.querySelector('#categoria optgroup[label=Receitas]').appendChild(option)
+            })
+        }
     }
 
     /**
@@ -383,10 +389,24 @@
         
         dadosFinais = new Dados();
         dadosFinais.close = closeBool;
-        google.script.run
-            .withSuccessHandler(sucesso)
-            .withFailureHandler(falha)
-            .escreverDados(dadosFinais);
+
+        if(validation(dadosFinais)){
+            if (dadosFinais.tipo == "transferencia") {
+                dadosFinais.categoria = "Transferência";
+                google.script.run
+                    .withSuccessHandler(sucesso)
+                    .withFailureHandler(falha)
+                    .escreverTransferencia(dadosFinais);
+            }else{
+                google.script.run
+                    .withSuccessHandler(sucesso)
+                    .withFailureHandler(falha)
+                    .escreverDados(dadosFinais);
+            }
+        }else{
+            falha("Insira os dados")
+        }
+
     }
 
     /**
@@ -404,12 +424,38 @@
      * Evento de falha ao salvar
      */
     function falha(error) {
-        document.getElementById("desc").text = "Ocorreu um Erro";
-        var x = document.getElementById("toast")
+        document.getElementById("desc").innerHTML = error;
+        var x = document.getElementById("toast");
         x.className = "show";
+        x.classList.add('erro');
         setTimeout(function () {
-            x.className = x.className.replace("show", "");
+            x.className = "";
         }, 5000);
+
+        fadeOut(document.getElementById('preloader'), 1000);
+    }
+
+    /**
+     * Verifica o objeto procurando por dados vazios
+     */
+    function validation(dados){
+        let bool = true;
+        console.log(dados);
+        Object.entries(dados).forEach(([key, value]) => {
+            if(key !== "close"){
+                if(value == "" || value == "Invalid Date"){
+                    bool = false;
+                    console.log(value);
+                }
+    
+                if(key == "valor" && isNaN(value)){
+                    bool = false;
+                    console.log(value);
+                }
+            }
+        })
+
+        return bool;
     }
 
     /**
