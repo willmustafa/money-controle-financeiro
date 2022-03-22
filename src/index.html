@@ -440,21 +440,17 @@
      */
     function validation(dados){
         let bool = true;
-        console.log(dados);
         Object.entries(dados).forEach(([key, value]) => {
             if(key !== "close"){
                 if(value == "" || value == "Invalid Date"){
                     bool = false;
-                    console.log(value);
                 }
     
                 if(key == "valor" && isNaN(value)){
                     bool = false;
-                    console.log(value);
                 }
             }
         })
-
         return bool;
     }
 
