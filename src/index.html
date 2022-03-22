@@ -132,8 +132,9 @@
             </div>
             <div class="modal-body">
                 <select type="text" class="form-control-plaintext bb mb-2" id="tipoCategoria">
-                    <option selected>Gastos Essenciais</option>
-                    <option>Gastos</option>
+                    <option value="Gastos_Essenciais">Gastos Essenciais</option>
+                    <option value="Gastos">Gastos</option>
+                    <option value="Receitas">Receitas</option>
                 </select>
                 <input type="text" class="form-control-plaintext bb" id="novaCategoria" placeholder="Alimentação">
 
@@ -156,8 +157,8 @@
             </div>
             <div class="modal-body">
                 <select type="text" class="form-control-plaintext bb mb-2" id="tipoConta">
-                    <option selected>Banco</option>
-                    <option>Cartão</option>
+                    <option selected>Bancos</option>
+                    <option>Cartões</option>
                 </select>
                 <input type="text" class="form-control-plaintext" id="novaConta" placeholder="Banco do Brasil">
             </div>
@@ -205,7 +206,7 @@
 
 
         // Event listener para o botão de pagamento com cartão
-        if (document.getElementsByTagName('body')[0].id !== 'transferencia') {
+        if (bodyId !== 'transferencia') {
             document.getElementById('pagamentoCartao').addEventListener('click', function () {
                 const descricaoEl = document.getElementById('descricao');
                 const categoriaEl = document.getElementById('categoria');
@@ -236,6 +237,9 @@
 
         fadeOut(document.getElementById('preloader'), 1000);
 
+        if(bodyId == "receitas"){
+            document.querySelector('#tipoCategoria option[value="Receitas"]').selected = true;
+        }
     }
 
     // helpers
@@ -256,7 +260,7 @@
             let option = document.createElement('option');
             option.value = x[0];
             option.text = x[0];
-            
+
             if (document.getElementsByTagName('body')[0].id == "transferencia") {
                 document.getElementById('contaSaida').appendChild(option);
 
@@ -264,7 +268,7 @@
                 option2.value = x[0];
                 option2.text = x[0];
                 document.querySelector('select#conta').appendChild(option2);
-            }else{
+            } else {
                 document.querySelector('#conta optgroup[label=Bancos]').appendChild(option);
             }
         })
@@ -274,31 +278,31 @@
                 let option = document.createElement('option');
                 option.value = x[0];
                 option.text = x[0];
-    
+
                 document.querySelector('#conta optgroup[label=Cartões]').appendChild(option);
             })
-    
+
             data.gastosEssenciais.forEach(x => {
                 let option = document.createElement('option');
                 option.value = x[0];
                 option.text = x[0];
-    
+
                 document.querySelector('#categoria optgroup[label=Gastos_Essenciais]').appendChild(option)
             })
-    
+
             data.gastos.forEach(x => {
                 let option = document.createElement('option');
                 option.value = x[0];
                 option.text = x[0];
-    
+
                 document.querySelector('#categoria optgroup[label=Gastos]').appendChild(option)
             })
-    
+
             data.receitas.forEach(x => {
                 let option = document.createElement('option');
                 option.value = x[0];
                 option.text = x[0];
-    
+
                 document.querySelector('#categoria optgroup[label=Receitas]').appendChild(option)
             })
         }
@@ -386,24 +390,24 @@
     function salvar(closeBool) {
         document.getElementById('preloader').classList = "";
         document.getElementById('preloader').style.display = "block";
-        
+
         dadosFinais = new Dados();
         dadosFinais.close = closeBool;
 
-        if(validation(dadosFinais)){
+        if (validation(dadosFinais)) {
             if (dadosFinais.tipo == "transferencia") {
                 dadosFinais.categoria = "Transferência";
                 google.script.run
                     .withSuccessHandler(sucesso)
                     .withFailureHandler(falha)
                     .escreverTransferencia(dadosFinais);
-            }else{
+            } else {
                 google.script.run
                     .withSuccessHandler(sucesso)
                     .withFailureHandler(falha)
                     .escreverDados(dadosFinais);
             }
-        }else{
+        } else {
             falha("Insira os dados")
         }
 
@@ -438,15 +442,15 @@
     /**
      * Verifica o objeto procurando por dados vazios
      */
-    function validation(dados){
+    function validation(dados) {
         let bool = true;
         Object.entries(dados).forEach(([key, value]) => {
-            if(key !== "close"){
-                if(value == "" || value == "Invalid Date"){
+            if (key !== "close") {
+                if (value == "" || value == "Invalid Date") {
                     bool = false;
                 }
-    
-                if(key == "valor" && isNaN(value)){
+
+                if (key == "valor" && isNaN(value)) {
                     bool = false;
                 }
             }
@@ -467,12 +471,15 @@
         var option = document.createElement('option');
         option.text = novaCategoria;
         option.value = novaCategoria;
-        elDados.categoria.appendChild(option);
+
+        document.querySelector(`#categoria optgroup[label="${data.tipo}"]`).appendChild(option);
         option.selected = true;
 
-        google.script.run.escreverCategoria(data);
+        google.script.run
+            .withFailureHandler(falha)
+            .escreverCategoria(data);
 
-        document.querySelector('#categoria .close').click()
+        document.querySelector('#modalCategoria .close').click()
     }
 
     /**
@@ -488,12 +495,15 @@
         var option = document.createElement('option');
         option.text = novaCategoria;
         option.value = novaCategoria;
-        elDados.conta.add(option);
+        
+        document.querySelector(`#conta optgroup[label="${data.tipo}"]`).appendChild(option);
         option.selected = true;
 
-        google.script.run.escreverConta(data);
+        google.script.run
+            .withFailureHandler(falha)
+            .escreverConta(data);
 
-        document.querySelector('#novaConta .close').click()
+        document.querySelector('#modalConta .close').click()
     }
 </script>
 

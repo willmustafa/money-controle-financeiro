@@ -125,7 +125,7 @@ function escreverTransferencia(data) {
 }
 
 function escreverCategoria(data) {
-  if (data.tipo == "Gastos Essenciais") {
+  if (data.tipo == "Gastos_Essenciais") {
     money.ss_Categorias.getRange("A" + (money.gastosEssenciais + 1)).setValue(data.categoria);
   } else if (data.tipo == "Gastos") {
     money.ss_Categorias.getRange("C" + (money.gastos + 1)).setValue(data.categoria);
@@ -135,9 +135,9 @@ function escreverCategoria(data) {
 }
 
 function escreverConta(data) {
-  if (data.tipo == "Banco") {
-    money.ss_Contas.getRange("A" + money.contas).setValue(data.categoria);
-  } else if (data.tipo == "Cartão") {
-    money.ss_Contas.getRange("F" + money.cartoes).setValue(data.categoria);
+  if (data.tipo == "Bancos") {
+    money.ss_Contas.getRange("A" + (money.contas + 1)).setValue(data.categoria);
+  } else if (data.tipo == "Cartões") {
+    money.ss_Contas.getRange("F" + (money.cartoes + 1)).setValue(data.categoria);
   }
 }
