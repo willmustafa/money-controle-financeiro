@@ -9,7 +9,7 @@
                 <div class="input-group-prepend">
                     <h3 class="money-text">R$</h3>
                 </div>
-                <input type="number" class="h3 input-transparente" placeholder="0,00" id="valor">
+                <input type="number" class="h3 input-transparente" step="0.01" min="0" placeholder="0,00" id="valor">
             </div>
         </div>
     </div>
@@ -336,9 +336,9 @@
                 dateStyle: 'short'
             });
             this.conta = elDados.conta.value;
-            this.valor = parseFloat(elDados.valor.value).toLocaleString('pt-BR');
+            this.valor = elDados.valor.value;
             if (elDados.bodyId[0].id == "despesas") {
-                this.valor = this.valor * (-1);
+                this.valor = parseFloat(this.valor * (-1)).toLocaleString('pt-BR');
             }
 
             if (elDados.bodyId[0].id == "transferencia") {
@@ -450,7 +450,7 @@
                     bool = false;
                 }
 
-                if (key == "valor" && isNaN(value)) {
+                if (key == "valor" && isNaN(parseFloat(value))) {
                     bool = false;
                 }
             }
